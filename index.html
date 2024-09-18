@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 50%, #c1e1dc 100%, #d5a6f1 100%);
+            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3), transparent 80%);
+            z-index: -1;
+            pointer-events: none; /* Prevent background interaction */
+        }
+
+        .background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%) -50px 0,
+                linear-gradient(225deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%) -50px 0,
+                linear-gradient(315deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%),
+                linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%);
+            background-size: 100px 100px;
+            z-index: -2;
+            opacity: 0.3;
+        }
+
+        /* Geometric Patterns */
+        .background-pattern { 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-radial-gradient(circle, transparent, transparent 20px, rgba(255, 255, 255, 0.1) 20px, rgba(255, 255, 255, 0.1) 40px),
+                        repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255, 255, 255, 0.05) 20px, rgba(255, 255, 255, 0.05) 40px),
+                        repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(255, 255, 255, 0.05) 20px, rgba(255, 255, 255, 0.05) 40px);
+            background-size: 40px 40px;
+            z-index: -3;
+            opacity: 0.4;
+        }
+
+
+
+        .container {
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .content {
+            max-width: 800px;
+            width: 100%;
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-pic {
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #2c3e50;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            color: #2c3e50;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .current-projects {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .current-project-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .current-project-item:hover {
+            background-color: #eef5f9;
+        }
+
+        .current-project-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .project-description {
+            display: none;
+            margin-top: 10px;
+            color: #555;
+            padding-left: 15px;
+            padding-right: 5px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .project-tile {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-tile:hover {
+            transform: translateY(-5px);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .project-info {
+            padding: 20px;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .project-info h3 {
+            margin: 0;
+        }
+
+        .contact {
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #2980b9;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            background-color: #3498db;
+            color: #fff;
+            padding: 4px 10px;
+            margin: 4px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .hobbies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .hobby-item {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .contact-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .contact-icons a {
+            margin: 0 10px;
+            font-size: 2em;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-icons a:hover {
+            transform: scale(1.1);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="container">
+        <div class="content">
+            <header>
+                <img src="img/profile-pic1.jpg" alt="Me" class="profile-pic">
+                <h1>Niels Saes</h1>
+                <p>Full Stack Developer | AI Enthusiast | Problem Solver | Passionate about Data Science
+                    <br></br>
+                    <b>I'm actively looking for a capstone internship project from February to July 2025.</b>
+                </p>
+            </header>
+
+            <section class="section">
+                <h2>Current Projects</h2>
+                <div class="current-projects">
+                    <div class="current-project-item">
+                        <h3>PowerBI Dashboard for E-Commerce Client</h3>
+                        <p>Developing a sales dashboard based on an Exact database that provides insight into time-series trends.</p>
+                        <div>
+                            <span class="skill-tag">PowerBI</span>
+                            <span class="skill-tag">DAX</span>
+                            <span class="skill-tag">Data Visualization</span>
+                        </div>
+                        <div class="project-description">
+                            <p> This work is done for a million-dollar revenue client, who uses it daily. Feedback is integrated timely after the client reaches out.</p>
+                        </div>
+                    </div>
+                    <div class="current-project-item">
+                        <h3>Mystery Project #1</h3>
+                        <p>Building and deploying a Flutter application for iOS and Android.</p>
+                        <div>
+                            <span class="skill-tag">Dart</span>
+                            <span class="skill-tag">Flutter</span>
+                            <span class="skill-tag">UI / UX</span>
+                            <span class="skill-tag">Firebase</span>
+                        </div>
+                        <div class="project-description">
+                            <p>This project is a data-driven solution built using Flutter and Firebase, designed for users to interact with JSON data from multiple sources.</p>
+                        </div>
+                    </div>
+                    <div class="current-project-item">
+                        <h3>Mystery Project #2</h3>
+                        <p>Exploring a business idea with AI models on a global scale.</p>
+                        <div>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">Deep Learning</span>
+                            <span class="skill-tag">YOLOv5</span>
+                            <span class="skill-tag">Market Research</span>
+                        </div>
+                        <div class="project-description">
+                            <p>In this project I develop AI models using Python and YOLOv5 to enhance detection accuracy in complex environments. 
+                                It leverages machine learning and real-time image analysis to deliver scalable solutions globally.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Past Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-tile">
+                        <img src="https://via.placeholder.com/400x200" alt="CodeMentor" class="project-image">
+                        <div class="project-info">
+                            <h3>CodeMentor: AI Programming Assistant</h3>
+                        </div>
+                        <div class="project-description">
+                            <p>CodeMentor is an AI-powered assistant that helps new programmers learn to code by providing real-time suggestions, fixing common mistakes, and giving detailed code reviews.</p>
+                        </div>
+                    </div>
+
+                    <div class="project-tile">
+                        <img src="https://via.placeholder.com/400x200" alt="BudgeterApp" class="project-image">
+                        <div class="project-info">
+                            <h3>BudgeterApp: Personal Finance Tool</h3>
+                        </div>
+                        <div class="project-description">
+                            <p>BudgeterApp is designed to track personal spending, analyze trends, and make personalized financial suggestions to help users save money and improve their financial health.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Experience</h2>
+                <div>
+                    <h3>Full Stack Developer at TechForward Inc. (2021-Present)</h3>
+                    <p>Led development of AI-powered management tools, improving team productivity by 25%.</p>
+                    <ul>
+                        <li>Implemented complex React and Node.js applications.</li>
+                        <li>Worked closely with data scientists to integrate AI algorithms for better decision-making.</li>
+                        <li>Deployed apps on AWS, focusing on scalability and security.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Shift Manager at Domino's (2020-2021)</h3>
+                    <p>Managed a team of 12 people, improving operational efficiency by 15%.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Hobbies</h2>
+                <div class="hobbies">
+                    <div class="hobby-item">
+                        <h3>Playing Classical Trombone</h3>
+                        <p>I perform in a local orchestra and explore how music intersects with technology.</p>
+                    </div>
+                    <div class="hobby-item">
+                        <h3>Coding Open-Source Projects</h3>
+                        <p>Contributing to open-source libraries in the AI and web development community.</p>
+                    </div>
+                    <div class="hobby-item">
+                        <h3>Chess</h3>
+                        <p>Competing in online tournaments and analyzing strategies using machine learning models.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="contact">
+                <h2>Contact Me</h2>
+                <p>Feel free to reach out via email or connect on social media:</p>
+                <div class="contact-icons">
+                    <a href="https://github.com" target="_blank">👾</a>
+                    <a href="https://linkedin.com/in/niels-saes" target="_blank">💼</a>
+                    <a href="mailto:webinquiries+nielssaes@yahoo.com">📧</a>
+                </div>
+                <a href="mailto:webinquiries+nielssaes@yahoo.com" class="btn">Get in Touch</a>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to toggle project descriptions
+        const projectItems = document.querySelectorAll('.current-project-item, .project-tile');
+
+        projectItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const description = item.querySelector('.project-description');
+                if (description) {
+                    description.style.display = description.style.display === 'block' ? 'none' : 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
