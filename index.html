@@ -217,7 +217,8 @@
             background-color: #3498db;
             color: #fff;
             padding: 4px 10px;
-            margin: 4px;
+            margin-right: 2px;
+            margin-top: 4px;
             border-radius: 20px;
             font-size: 0.9em;
         }
@@ -265,6 +266,30 @@
         .btn:hover {
             background-color: #2980b9;
         }
+
+        .and-more {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #eee;
+            border: 2px dashed #3498db;
+            color: #3498db;
+            text-align: center;
+        }
+
+        .and-more .project-info {
+            padding: 40px;
+        }
+
+        .and-more h3 {
+            font-size: 2em;
+        }
+
+        .and-more:hover {
+            transform: translateY(5px);
+            cursor:default;
+        }
+
     </style>
 </head>
 <body>
@@ -274,9 +299,11 @@
             <header>
                 <img src="img/profile-pic1.jpg" alt="Me" class="profile-pic">
                 <h1>Niels Saes</h1>
-                <p>Full Stack Developer | AI Enthusiast | Problem Solver | Passionate about Data Science
+                <p>Data Scientist | Experienced Coder | Passionate about everything Data
                     <br></br>
                     <b>I'm actively looking for a capstone internship project from February to July 2025.</b>
+                    <br></br>
+                    <b>2.5 years of IT work experience</b>
                 </p>
             </header>
 
@@ -292,7 +319,7 @@
                             <span class="skill-tag">Data Visualization</span>
                         </div>
                         <div class="project-description">
-                            <p> This work is done for a million-dollar revenue client, who uses it daily. Feedback is integrated timely after the client reaches out.</p>
+                            <p>This work is done for a million-dollar revenue client, who uses it daily. Feedback is integrated timely after the client reaches out.</p>
                         </div>
                     </div>
                     <div class="current-project-item">
@@ -302,7 +329,7 @@
                             <span class="skill-tag">Dart</span>
                             <span class="skill-tag">Flutter</span>
                             <span class="skill-tag">UI / UX</span>
-                            <span class="skill-tag">Firebase</span>
+                            <span class= "skill-tag">Firebase</span>
                         </div>
                         <div class="project-description">
                             <p>This project is a data-driven solution built using Flutter and Firebase, designed for users to interact with JSON data from multiple sources.</p>
@@ -329,22 +356,18 @@
                 <h2>Past Projects</h2>
                 <div class="projects-grid">
                     <div class="project-tile">
-                        <img src="https://via.placeholder.com/400x200" alt="CodeMentor" class="project-image">
+                        <img src="/img/1200-45380704-andromeda-galaxy.jpg" alt="Galaxy Classifier" class="project-image">
                         <div class="project-info">
-                            <h3>CodeMentor: AI Programming Assistant</h3>
+                            <h3>Galaxy Classifier</h3>
                         </div>
                         <div class="project-description">
-                            <p>CodeMentor is an AI-powered assistant that helps new programmers learn to code by providing real-time suggestions, fixing common mistakes, and giving detailed code reviews.</p>
+                            <p>Developed a Python-based project utilizing machine learning algorithms to enable amateur astronomers to accurately classify galaxies using spectroscopic data from the Sloan Digital Sky Survey (SDSS).</p>
                         </div>
                     </div>
 
-                    <div class="project-tile">
-                        <img src="https://via.placeholder.com/400x200" alt="BudgeterApp" class="project-image">
+                    <div class="project-tile and-more">
                         <div class="project-info">
-                            <h3>BudgeterApp: Personal Finance Tool</h3>
-                        </div>
-                        <div class="project-description">
-                            <p>BudgeterApp is designed to track personal spending, analyze trends, and make personalized financial suggestions to help users save money and improve their financial health.</p>
+                            <h3>And More...</h3>
                         </div>
                     </div>
                 </div>
@@ -353,47 +376,101 @@
             <section class="section">
                 <h2>Experience</h2>
                 <div>
-                    <h3>Full Stack Developer at TechForward Inc. (2021-Present)</h3>
-                    <p>Led development of AI-powered management tools, improving team productivity by 25%.</p>
+                    <h3>IT Project Manager / Data Analyst <a href="https://www.buromatthijs.com/">Buro Matthijs</a> (April 2024 - Present)</h3>
+                    <p>At BuroMatthijs I manage and design a projects' requirements and tasks for developers for client solutions. 
+                        On top of this, I build dashboards for clients operating in varying industries.</p>
                     <ul>
-                        <li>Implemented complex React and Node.js applications.</li>
-                        <li>Worked closely with data scientists to integrate AI algorithms for better decision-making.</li>
-                        <li>Deployed apps on AWS, focusing on scalability and security.</li>
+                        <li>Designing and implementing IT solutions for SME's</li>
+                        <li>Designing and implementing client dashboards</li>
+                        <li>Requirements management with our software developers</li>
                     </ul>
+                    <div>
+                        <span class="skill-tag">PowerBI</span>
+                        <span class="skill-tag">Data Analysis</span>
+                        <span class="skill-tag">Requirements Management</span>
+                        <span class="skill-tag">Software Design</span>
+                    </div>
                 </div>
                 <div>
-                    <h3>Shift Manager at Domino's (2020-2021)</h3>
-                    <p>Managed a team of 12 people, improving operational efficiency by 15%.</p>
+                    <h3>Information Technology Intern at <a href="https://www.asml.com/">ASML</a> (September 2023 - January 2024) </h3>
+                    <p>Analyzed the implementation of AI for defect detection in the supply chain.</p>
+                    <ul>
+                        <li>Collaborated with internal and external stakeholders to ensure project alignment and execution through active communication.</li>
+                        <li>Quantified the cost of defects for ASML by aggregating and analyzing supply chain data from SAP & other sources.</li>
+                        <li>Researched the applicability of advanced machine learning algorithms (f.e. instance segmentation) to detect defects.</li>
+                        <li>Performed a market research on AOI solution providers.</li>
+                        <li>Advised ASML through a comprehensive business case.</li>
+                    </ul>
+                    <p><b>I received an Outstanding (10 out of 10) for my internship.</b></p>
+                    <div>
+                        <span class="skill-tag">Stakeholder Involvement</span>
+                        <span class="skill-tag">SAP</span>
+                        <span class="skill-tag">Data Analysis</span>
+                        <span class="skill-tag">AI Market Research</span>
+                        <span class="skill-tag">Business Casing</span>
+                    </div>
+                </div>
+                <div>
+                    <h3>Full Stack Developer at <a href="https://www.clonable.net/">Clonable</a> (March 2022 - September 2023)</h3>
+                    <p>As the Project Lead and Full Stack Developer at Clonable, I had the opportunity to design and build the current website from the ground up.</p> 
+                    <ul>                        
+                        <li>Incorporated web-designs by a Product Designer.</li>
+                        <li>Implemented a CMS system for blogs and other website content (Strapi.js).</li>
+                        <li>Coordinated with stakeholders from design to implementation.</li>
+                    </ul>
+                    <div>
+                        <span class="skill-tag">Strapi.js</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS</span>
+                        <span class="skill-tag">UI / UX</span>
+                    </div>
                 </div>
             </section>
 
             <section class="section">
-                <h2>Hobbies</h2>
-                <div class="hobbies">
-                    <div class="hobby-item">
-                        <h3>Playing Classical Trombone</h3>
-                        <p>I perform in a local orchestra and explore how music intersects with technology.</p>
+                <h2>My Hobbies</h2>
+                <div class="projects-grid">
+                    <div class="project-tile">
+                        <img src="/img/IMG_9564 (1).png" alt="Playing Trombone" class="project-image">
+                        <div class="project-info">
+                            <h3>Playing Classical Trombone</h3>
+                        </div>
+                        <div class="project-description">
+                            <p>I have been playing the trombone for the last 14 years and recently at a pretty high amateur level. Since then I have played wonderful pieces and music together with amazing people.
+                                Ensembles I play(ed) in include:
+                                <ul>
+                                    <li>Koninklijke Harmonie Oefening & Uitspanning</li>
+                                    <li>ESMG Quadrivium Auletes & Ensuite</li>
+                                    <li>University of Waterloo Jazz & Orchestra ensembles</li>
+                                    <li>The Dutch Film Orchestra</li>
+                                </ul>
+                            </p>
+                        </div>
                     </div>
-                    <div class="hobby-item">
-                        <h3>Coding Open-Source Projects</h3>
-                        <p>Contributing to open-source libraries in the AI and web development community.</p>
-                    </div>
-                    <div class="hobby-item">
-                        <h3>Chess</h3>
-                        <p>Competing in online tournaments and analyzing strategies using machine learning models.</p>
+
+                    <div class="project-tile">
+                        <img src="img/IMG-20240914-WA0022.jpg" alt="Travelling" class="project-image">
+                        <div class="project-info">
+                            <h3>Travelling the World</h3>
+                        </div>
+                        <div class="project-description">
+                            <p>I'm passionate about traveling the world and immersing myself in diverse cultures. 
+                            My experiences have been enriched by studying abroad for a minor in Canada, where I have the opportunity to explore new perspectives, 
+                            connect with people from different backgrounds, and expand my global awareness.</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <section class="contact">
                 <h2>Contact Me</h2>
-                <p>Feel free to reach out via email or connect on social media:</p>
+                <p>Feel free to reach out via my LinkedIn:</p>
                 <div class="contact-icons">
-                    <a href="https://github.com" target="_blank">👾</a>
+                    <a href="https://github.com/aetherguardian" target="_blank">👾</a>
                     <a href="https://linkedin.com/in/niels-saes" target="_blank">💼</a>
-                    <a href="mailto:webinquiries+nielssaes@yahoo.com">📧</a>
                 </div>
-                <a href="mailto:webinquiries+nielssaes@yahoo.com" class="btn">Get in Touch</a>
+                <a href="https://linkedin.com/in/niels-saes" class="btn">Get in Touch</a>
             </section>
         </div>
     </div>
