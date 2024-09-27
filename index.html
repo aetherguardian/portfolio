@@ -154,12 +154,16 @@
             padding-bottom: 0;
         }
 
-        .project-description {
-            display: none;
+        .project-description {  
+            max-height: 999px;
             margin-top: 10px;
+            transition-property: all;
+            transition-duration: 350ms;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            overflow:hidden;
             color: #555;
-            padding-left: 15px;
-            padding-right: 5px;
+            padding-left: 20px;
+            padding-right: 20px;
         }
 
         .projects-grid {
@@ -188,9 +192,11 @@
         }
 
         .project-info {
-            padding: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 20px;
+            padding-bottom: -20px;
             color: #3498db;
-            margin-bottom: 10px;
         }
 
         .project-info h3 {
