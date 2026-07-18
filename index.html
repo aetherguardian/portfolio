@@ -6,112 +6,54 @@
     <title>Developer Portfolio</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
-        
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        :root {
+            --bg: #1f1f1f;
+            --surface: #2a2a2a;
+            --surface-light: #333;
+            --cream: #faebd7;
+            --cream-dim: #cbb89f;
+            --cream-bright: #fff;
+            --shadow: 0 5px 15px rgba(0, 0, 0, .4);
+            --radius: 8px;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
-            color: #333;
+            background-color: var(--bg);
+            color: var(--cream-dim);
             margin: 0;
-            padding: 0;
-            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 50%, #c1e1dc 100%, #d5a6f1 100%);
+        }
+
+        /* Layout */
+        .hero {
+            background-image: url('img/divisibility_combined_1610_gray12.png');
             background-attachment: fixed;
-            position: relative;
-            overflow-x: hidden;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
-
-        .background::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3), transparent 80%);
-            z-index: -1;
-            pointer-events: none; /* Prevent background interaction */
-        }
-
-        .background::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                linear-gradient(135deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%) -50px 0,
-                linear-gradient(225deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%) -50px 0,
-                linear-gradient(315deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%),
-                linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%);
-            background-size: 100px 100px;
-            z-index: -2;
-            opacity: 0.3;
-        }
-
-        /* Geometric Patterns */
-        .background-pattern { 
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-radial-gradient(circle, transparent, transparent 20px, rgba(255, 255, 255, 0.1) 20px, rgba(255, 255, 255, 0.1) 40px),
-                        repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255, 255, 255, 0.05) 20px, rgba(255, 255, 255, 0.05) 40px),
-                        repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(255, 255, 255, 0.05) 20px, rgba(255, 255, 255, 0.05) 40px);
-            background-size: 40px 40px;
-            z-index: -3;
-            opacity: 0.4;
-        }
-
-
 
         .container {
-            display: flex;
-            justify-content: center;
             padding: 40px 20px;
             min-height: 100vh;
         }
 
         .content {
             max-width: 800px;
-            width: 100%;
-            background-color: white;
+            margin: 0 auto;
             padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .profile-pic {
-            width: 230px;
-            height: 230px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #2c3e50;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        h1, h2, h3 {
-            font-family: 'Poppins', sans-serif;
-            color: #2c3e50;
-        }
-
-        h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #3498db, #2980b9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
+        /* Typography */
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; color: var(--cream); }
+        h1 { font-size: 2em; margin-bottom: 10px; }
 
         h2 {
-            font-size: 2em;
-            margin-top: 40px;
-            margin-bottom: 20px;
+            font-size: 1.5em;
+            margin: 40px 0 20px;
             position: relative;
             display: inline-block;
         }
@@ -123,379 +65,330 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, #3498db, #2980b9);
+            background: linear-gradient(90deg, var(--cream), var(--cream-dim));
         }
 
-        .section {
-            margin-bottom: 40px;
+        a { color: var(--cream); text-decoration: none; transition: color .3s ease; }
+        a:hover { color: var(--cream-bright); }
+
+        /* Header */
+        .area-header { text-align: center; margin-bottom: 30px; }
+
+        .profile-pic {
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--cream);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, .5);
         }
 
-        .current-projects {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        /* Cards */
+        .section { margin-bottom: 40px; }
+
+        .card {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
         }
 
-        .current-project-item {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .current-project-item:hover {
-            background-color: #eef5f9;
-        }
-
-        .current-project-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .project-description {  
-            max-height: 999px;
-            margin-top: 10px;
-            transition-property: all;
-            transition-duration: 350ms;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            overflow:hidden;
-            color: #555;
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-
-        .projects-grid {
+        .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
 
-        .project-tile {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
+        .card-body { padding: 20px; }
+        .card-body h3 { margin: 0; color: var(--cream); }
+        .card-text { color: var(--cream-dim); padding: 0 20px 20px; }
 
-        .project-tile:hover {
-            transform: translateY(-5px);
-        }
-
-        .project-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .project-info {
-            padding-left: 20px;
-            padding-right: 20px;
-            padding-top: 20px;
-            padding-bottom: -20px;
-            color: #3498db;
-        }
-
-        .project-info h3 {
-            margin: 0;
-        }
-
-        .contact {
-            text-align: center;
-            margin-top: 60px;
-        }
-
-        a {
-            color: #3498db;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        a:hover {
-            color: #2980b9;
-        }
-
-        .skill-tag {
-            display: inline-block;
-            background-color: #3498db;
-            color: #fff;
-            padding: 4px 10px;
-            margin-right: 2px;
-            margin-top: 4px;
-            border-radius: 20px;
-            font-size: 0.9em;
-        }
-
-        .hobbies {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .hobby-item {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .contact-icons {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .contact-icons a {
-            margin: 0 10px;
-            font-size: 2em;
-            transition: transform 0.3s ease;
-        }
-
-        .contact-icons a:hover {
-            transform: scale(1.1);
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: #3498db;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn:hover {
-            background-color: #2980b9;
-        }
+        .project-tile { transition: transform .3s ease; cursor: pointer; }
+        .project-tile:hover { transform: translateY(-5px); }
+        .project-image { width: 100%; height: 200px; object-fit: cover; }
 
         .and-more {
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #eee;
-            border: 2px dashed #3498db;
-            color: #3498db;
+            background-color: var(--surface-light);
+            border: 2px dashed var(--cream);
             text-align: center;
+            cursor: default;
+        }
+        .and-more .card-body { padding: 40px; }
+        .and-more h3 { font-size: 2em; }
+        .and-more:hover { transform: none; }
+
+        /* Bits */
+        .skill-tag {
+            display: inline-block;
+            background-color: var(--cream);
+            color: var(--bg);
+            padding: 4px 10px;
+            margin: 4px 2px 0 0;
+            border-radius: 20px;
+            font-size: .9em;
         }
 
-        .and-more .project-info {
-            padding: 40px;
-        }
+        .area-contact { text-align: center; margin-top: 60px; }
+        .contact-icons { display: flex; justify-content: center; margin-top: 20px; }
+        .contact-icons a { margin: 0 10px; font-size: 2em; transition: transform .3s ease; }
+        .contact-icons a:hover { transform: scale(1.1); }
 
-        .and-more h3 {
-            font-size: 2em;
+        .btn {
+            display: inline-block;
+            background-color: var(--cream);
+            color: var(--bg);
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color .3s ease;
         }
+        .btn:hover { background-color: var(--cream-bright); color: var(--bg); }
 
-        .and-more:hover {
-            transform: translateY(5px);
-            cursor:default;
+        /* ── Desktop ─────────────────────────────────────────────── */
+        @media (min-width: 900px) {
+            .container { padding: clamp(16px, 2vw, 40px); }
+
+            .content {
+                max-width: none;
+                margin: 0;
+                padding: 0;
+                font-size: clamp(0.85rem, 0.7vw, 1.4rem);
+                display: grid;
+                grid-template-columns: 2fr 2fr clamp(16px, 2vw, 48px) 4fr;
+                grid-template-areas:
+                    "header   contact   .   experience"
+                    "current  current   .   experience"
+                    "past     past      .   experience"
+                    "hobbies  hobbies   .   experience";
+                gap: clamp(12px, 1.2vw, 28px);
+                align-items: start;
+            }
+
+            .area-header     { grid-area: header; }
+            .area-contact    { grid-area: contact; }
+            .area-current    { grid-area: current; }
+            .area-experience { grid-area: experience; }
+            .area-past       { grid-area: past; }
+            .area-hobbies    { grid-area: hobbies; }
+
+            /* Grid gap owns all spacing between areas */
+            .content > * { margin: 0; }
+            .content > * > h2 { margin-top: 0; }
+
+            h2 { font-size: clamp(1.15rem, 1.3vw, 2em); }
+            .section h2 { margin-bottom: clamp(10px, 1vw, 18px); }
+
+            .card-body { padding: clamp(12px, 1vw, 22px) clamp(14px, 1.2vw, 26px); }
+            .card-text { padding: 0 clamp(14px, 1.2vw, 26px) clamp(12px, 1vw, 22px); }
+            .project-image { height: clamp(120px, 12vw, 260px); }
+
+            .area-current p,
+            .area-past p,
+            .area-hobbies p,
+            .area-current ul,
+            .area-hobbies ul { margin: 8px 0; }
+
+            .area-experience { line-height: 1.5; }
+            .job + .job { margin-top: 1.5em; }
+
+            /* Header goes horizontal: pic left, text stacked right */
+            .area-header {
+                display: flex;
+                align-items: center;
+                gap: clamp(16px, 1.5vw, 32px);
+                text-align: left;
+            }
+            .header-text { min-width: 0; }
+
+            .area-header .profile-pic {
+                width: clamp(110px, 9vw, 230px);
+                height: clamp(110px, 9vw, 230px);
+                flex-shrink: 0;
+            }
+            .area-header h1 { font-size: clamp(1.5rem, 1.8vw, 2.8em); margin: 0; }
+            .tagline { margin: 10px 0 0; line-height: 1.5; }
+            .header-note { margin: 8px 0 0; font-weight: 700; }
+
+            .area-contact .contact-icons { margin-top: 14px; }
         }
-
     </style>
-    <link rel="icon" type="image/x-icon" href="img/favicon3.ico">
+    <link rel="icon" type="image/x-icon" href="img/favicon-beige.ico">
 </head>
 <body>
-    <div class="background"></div>
-    <div class="container">
-        <div class="content">
-            <header>
-                <img src="img/profile-pic1.jpg" alt="Me" class="profile-pic">
-                <h1>Niels Saes</h1>
-                <p>AI Engineer | Experienced Coder | Passionate about everything Data
-                    <br></br>
-                    <b>I'm currently studying my Pre-Master in Data Science & Artificial Intelligence at Eindhoven Technical University.</b>
-                    <b>4+ years of data science work experience</b>
-                </p>
-            </header>
+    <div class="hero">
+        <div class="container">
+            <div class="content">
+                <header class="area-header">
+                    <img src="img/DSC01522-square.jpg" alt="Me" class="profile-pic">
+                    <div class="header-text">
+                        <h1>Niels Saes</h1>
+                        <p class="tagline">AI Engineer | Experienced Coder | Passionate about everything Data</p>
+                        <p class="header-note">I'm currently studying my Masters in Data Science &amp; Artificial Intelligence at Eindhoven Technical University.</p>
+                        <p class="header-note">4+ years of data science work experience</p>
+                    </div>
+                </header>
 
-            <section class="section">
-                <h2>Current Projects</h2>
-                <div class="current-projects">
-                    <div class="current-project-item">
-                        <h3>Mystery Project #1</h3>
-                        <p>Building and deploying an React Native application for iOS and Android using Expo.</p>
-                        <div>
-                            <span class="skill-tag">RxDB</span>
-                            <span class="skill-tag">Expo</span>
-                            <span class="skill-tag">UI / UX</span>
-                            <span class= "skill-tag">Firebase</span>
-                            <span class= "skill-tag">LLM Embeddings</span>
-                        </div>
-                        <div class="project-description">
+                <section class="section area-current">
+                    <h2>Current Projects</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Mystery Project #1</h3>
+                            <p>Building and deploying a React Native application for iOS and Android using Expo.</p>
+                            <div>
+                                <span class="skill-tag">RxDB</span>
+                                <span class="skill-tag">Expo</span>
+                                <span class="skill-tag">UI / UX</span>
+                                <span class="skill-tag">Firebase</span>
+                                <span class="skill-tag">LLM Embeddings</span>
+                            </div>
                             <p>This project is a data-driven solution built using Expo, Firebase and LLMs, designed for users to interact with LLM output through dynamic prompting.</p>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <section class="section">
-                <h2>Past Projects</h2>
-                <div class="projects-grid">
-                    <div class="project-tile">
-                        <img src="img/1200-45380704-andromeda-galaxy.jpg" alt="Galaxy Classifier" class="project-image">
-                        <div class="project-info">
-                            <h3>Galaxy Classifier</h3>
+                <section class="section area-past">
+                    <h2>Past Projects</h2>
+                    <div class="grid">
+                        <div class="card project-tile">
+                            <img src="img/1200-45380704-andromeda-galaxy.jpg" alt="Galaxy Classifier" class="project-image">
+                            <div class="card-body">
+                                <h3>Galaxy Classifier</h3>
+                            </div>
+                            <div class="card-text">
+                                <p>Developed a Python-based project utilizing machine learning algorithms to enable amateur astronomers to accurately classify galaxies using spectroscopic data from the Sloan Digital Sky Survey (SDSS).</p>
+                            </div>
                         </div>
-                        <div class="project-description">
-                            <p>Developed a Python-based project utilizing machine learning algorithms to enable amateur astronomers to accurately classify galaxies using spectroscopic data from the Sloan Digital Sky Survey (SDSS).</p>
-                        </div>
-                    </div>
 
-                    <div class="project-tile and-more">
-                        <div class="project-info">
-                            <h3>And More...</h3>
+                        <div class="card project-tile and-more">
+                            <div class="card-body">
+                                <h3>And More...</h3>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <section class="section">
-                <h2>Experience</h2>
-                <div>
-                    <h3>LLM Engineering Intern <a href="https://www.cbs.nl" target="_blank">Statistics Netherlands (CBS)</a> (January 2025 - July 2025)</h3>
-                    <p>At my graduation internship at the CBS, I will implement open-source Natural Language Processing techniques, 
-                        open-source LLM’s and vector database principles to enhance data querying for this government institution. 
-                        The goal is to make a Proof of Concept that will kickstart a full project on better internal data querying.</p>
-                    <ul>
-                        <li>Researching and deploying open-source LLM methods and models in a highly complex and confidential environment</li>
-                        <li>Design and implement an IT solution for a large government institution that manages all the data the government needs</li>
-                        <li>Providing the CBS with AI knowledge and making detailed and understandable software documentation</li>
-                    </ul>
-                    <p><b>I received a Satisfactory (6.9 out of 10) for my internship.</b></p>
-                    <div>
-                        <span class="skill-tag">LLMs</span>
-                        <span class="skill-tag">Dynamic Prompting</span>
-                        <span class="skill-tag">Vector Databases</span>
-                        <span class="skill-tag">Metadata</span>
-                        <span class="skill-tag">Software Architecture</span>
-                        <span class="skill-tag">UI / UX</span>
-                    </div>
-                </div>
-                <div>
-                    <h3>IT Project Manager / Data Analyst <a href="https://www.buromatthijs.com/" target="_blank">Buro Matthijs</a> (April 2024 - April 2025)</h3>
-                    <p>At BuroMatthijs I managed and designed a projects' requirements and tasks for developers for client solutions. 
-                        On top of this, I built dashboards for clients operating in varying industries, such as: horticulture, e-commerce and nutrition.</p>
-                    <ul>
-                        <li>Designing and implementing IT solutions for SME's</li>
-                        <li>Designing and implementing client dashboards</li>
-                        <li>Requirements management with our software developers</li>
-                    </ul>
-                    <div>
-                        <span class="skill-tag">PowerBI</span>
-                        <span class="skill-tag">Data Analysis</span>
-                        <span class="skill-tag">Requirements Management</span>
-                        <span class="skill-tag">Software Design</span>
-                    </div>
-                </div>
-                <div>
-                    <h3>Information Technology Intern at <a href="https://www.asml.com/" target="_blank">ASML</a> (September 2023 - January 2024) </h3>
-                    <p>Analyzed the implementation of AI for defect detection in the supply chain.</p>
-                    <ul>
-                        <li>Collaborated with internal and external stakeholders to ensure project alignment and execution through active communication.</li>
-                        <li>Quantified the cost of defects for ASML by aggregating and analyzing supply chain data from SAP & other sources.</li>
-                        <li>Researched the applicability of advanced machine learning algorithms (f.e. instance segmentation) to detect defects.</li>
-                        <li>Performed a market research on AOI solution providers.</li>
-                        <li>Advised ASML through a comprehensive business case.</li>
-                    </ul>
-                    <p><b>I received an Outstanding (10 out of 10) for my internship.</b></p>
-                    <div>
-                        <span class="skill-tag">Stakeholder Involvement</span>
-                        <span class="skill-tag">SAP</span>
-                        <span class="skill-tag">Data Analysis</span>
-                        <span class="skill-tag">AI Market Research</span>
-                        <span class="skill-tag">Business Casing</span>
-                    </div>
-                </div>
-                <div>
-                    <h3>Full Stack Developer at <a href="https://www.clonable.net/" target="_blank">Clonable</a> (March 2022 - September 2023)</h3>
-                    <p>As the Project Lead and Full Stack Developer at Clonable, I had the opportunity to design and build the current website from the ground up.</p> 
-                    <ul>                        
-                        <li>Incorporated web-designs by a Product Designer.</li>
-                        <li>Implemented a CMS system for blogs and other website content (Strapi.js).</li>
-                        <li>Coordinated with stakeholders from design to implementation.</li>
-                    </ul>
-                    <div>
-                        <span class="skill-tag">Strapi.js</span>
-                        <span class="skill-tag">React</span>
-                        <span class="skill-tag">HTML5</span>
-                        <span class="skill-tag">CSS</span>
-                        <span class="skill-tag">UI / UX</span>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section">
-                <h2>My Hobbies</h2>
-                <div class="projects-grid">
-                    <div class="project-tile">
-                        <img src="img/IMG_9564 (1).png" alt="Playing Trombone" class="project-image">
-                        <div class="project-info">
-                            <h3>Playing Classical Trombone</h3>
+                <section class="section area-experience">
+                    <h2>Experience</h2>
+                    <div class="job">
+                        <h3>LLM Engineering Intern <a href="https://www.cbs.nl" target="_blank">Statistics Netherlands (CBS)</a> (January 2025 - July 2025)</h3>
+                        <p>At my graduation internship at the CBS, I will implement open-source Natural Language Processing techniques,
+                            open-source LLM's and vector database principles to enhance data querying for this government institution.
+                            The goal is to make a Proof of Concept that will kickstart a full project on better internal data querying.</p>
+                        <ul>
+                            <li>Researching and deploying open-source LLM methods and models in a highly complex and confidential environment</li>
+                            <li>Design and implement an IT solution for a large government institution that manages all the data the government needs</li>
+                            <li>Providing the CBS with AI knowledge and making detailed and understandable software documentation</li>
+                        </ul>
+                        <p><b>I received a Satisfactory (6.9 out of 10) for my internship.</b></p>
+                        <div>
+                            <span class="skill-tag">LLMs</span>
+                            <span class="skill-tag">Dynamic Prompting</span>
+                            <span class="skill-tag">Vector Databases</span>
+                            <span class="skill-tag">Metadata</span>
+                            <span class="skill-tag">Software Architecture</span>
+                            <span class="skill-tag">UI / UX</span>
                         </div>
-                        <div class="project-description">
-                            <p>I have been playing the trombone for the last 15 years and recently at a pretty high amateur level. Since then I have played wonderful pieces and music together with amazing people.
-                                Ensembles I play(ed) in include:
+                    </div>
+                    <div class="job">
+                        <h3>IT Project Manager / Data Analyst <a href="https://www.buromatthijs.com/" target="_blank">Buro Matthijs</a> (April 2024 - April 2025)</h3>
+                        <p>At BuroMatthijs I managed and designed a projects' requirements and tasks for developers for client solutions.
+                            On top of this, I built dashboards for clients operating in varying industries, such as: horticulture, e-commerce and nutrition.</p>
+                        <ul>
+                            <li>Designing and implementing IT solutions for SME's</li>
+                            <li>Designing and implementing client dashboards</li>
+                            <li>Requirements management with our software developers</li>
+                        </ul>
+                        <div>
+                            <span class="skill-tag">PowerBI</span>
+                            <span class="skill-tag">Data Analysis</span>
+                            <span class="skill-tag">Requirements Management</span>
+                            <span class="skill-tag">Software Design</span>
+                        </div>
+                    </div>
+                    <div class="job">
+                        <h3>Information Technology Intern at <a href="https://www.asml.com/" target="_blank">ASML</a> (September 2023 - January 2024)</h3>
+                        <p>Analyzed the implementation of AI for defect detection in the supply chain.</p>
+                        <ul>
+                            <li>Collaborated with internal and external stakeholders to ensure project alignment and execution through active communication.</li>
+                            <li>Quantified the cost of defects for ASML by aggregating and analyzing supply chain data from SAP &amp; other sources.</li>
+                            <li>Researched the applicability of advanced machine learning algorithms (f.e. instance segmentation) to detect defects.</li>
+                            <li>Performed a market research on AOI solution providers.</li>
+                            <li>Advised ASML through a comprehensive business case.</li>
+                        </ul>
+                        <p><b>I received an Outstanding (10 out of 10) for my internship.</b></p>
+                        <div>
+                            <span class="skill-tag">Stakeholder Involvement</span>
+                            <span class="skill-tag">SAP</span>
+                            <span class="skill-tag">Data Analysis</span>
+                            <span class="skill-tag">AI Market Research</span>
+                            <span class="skill-tag">Business Casing</span>
+                        </div>
+                    </div>
+                    <div class="job">
+                        <h3>Full Stack Developer at <a href="https://www.clonable.net/" target="_blank">Clonable</a> (March 2022 - September 2023)</h3>
+                        <p>As the Project Lead and Full Stack Developer at Clonable, I had the opportunity to design and build the current website from the ground up.</p>
+                        <ul>
+                            <li>Incorporated web-designs by a Product Designer.</li>
+                            <li>Implemented a CMS system for blogs and other website content (Strapi.js).</li>
+                            <li>Coordinated with stakeholders from design to implementation.</li>
+                        </ul>
+                        <div>
+                            <span class="skill-tag">Strapi.js</span>
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">HTML5</span>
+                            <span class="skill-tag">CSS</span>
+                            <span class="skill-tag">UI / UX</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section area-hobbies">
+                    <h2>My Hobbies</h2>
+                    <div class="grid">
+                        <div class="card project-tile">
+                            <img src="img/IMG_9564 (1).png" alt="Playing Trombone" class="project-image">
+                            <div class="card-body">
+                                <h3>Playing Classical Trombone</h3>
+                            </div>
+                            <div class="card-text">
+                                <p>I have been playing the trombone for the last 15 years and recently at a pretty high amateur level. Since then I have played wonderful pieces and music together with amazing people. Ensembles I play(ed) in include:</p>
                                 <ul>
                                     <li>The Dutch Film Orchestra</li>
-                                    <li>Koninklijke Harmonie Oefening & Uitspanning</li>
-                                    <li>ESMG Quadrivium Auletes & Ensuite</li>
-                                    <li>University of Waterloo Jazz & Orchestra ensembles</li>
+                                    <li>Koninklijke Harmonie Oefening &amp; Uitspanning</li>
+                                    <li>ESMG Quadrivium Auletes &amp; Ensuite</li>
+                                    <li>University of Waterloo Jazz &amp; Orchestra ensembles</li>
                                 </ul>
-                            </p>
+                            </div>
+                        </div>
+
+                        <div class="card project-tile">
+                            <img src="img/IMG-20240914-WA0022.jpg" alt="Travelling" class="project-image">
+                            <div class="card-body">
+                                <h3>Travelling the World</h3>
+                            </div>
+                            <div class="card-text">
+                                <p>I'm passionate about traveling the world and immersing myself in diverse cultures.
+                                My experiences have been enriched by studying abroad for a minor in Canada, where I had the opportunity to explore new perspectives,
+                                connect with people from different backgrounds, and expand my global awareness.</p>
+                            </div>
                         </div>
                     </div>
+                </section>
 
-                    <div class="project-tile">
-                        <img src="img/IMG-20240914-WA0022.jpg" alt="Travelling" class="project-image">
-                        <div class="project-info">
-                            <h3>Travelling the World</h3>
-                        </div>
-                        <div class="project-description">
-                            <p>I'm passionate about traveling the world and immersing myself in diverse cultures. 
-                            My experiences have been enriched by studying abroad for a minor in Canada, where I had the opportunity to explore new perspectives, 
-                            connect with people from different backgrounds, and expand my global awareness.</p>
-                        </div>
+                <section class="section area-contact">
+                    <h2>Contact Me</h2>
+                    <p>Feel free to reach out through LinkedIn:</p>
+                    <div class="contact-icons">
+                        <a href="https://github.com/aetherguardian" target="_blank">👾</a>
+                        <a href="https://linkedin.com/in/niels-saes" target="_blank">💼</a>
                     </div>
-                </div>
-            </section>
-
-            <section class="contact">
-                <h2>Contact Me</h2>
-                <p>Feel free to reach out through LinkedIn:</p>
-                <div class="contact-icons">
-                    <a href="https://github.com/aetherguardian" target="_blank">👾</a>
-                    <a href="https://linkedin.com/in/niels-saes" target="_blank">💼</a>
-                </div>
-                <a href="https://linkedin.com/in/niels-saes" class="btn">Get in Touch</a>
-            </section>
+                    <a href="https://linkedin.com/in/niels-saes" class="btn">Get in Touch</a>
+                </section>
+            </div>
         </div>
     </div>
-
-
-    <!-- 
-    This script allows clickable project tiles.
-    Maybe for future implementation this is nice due to actual project content, but not right now.
-    04/02/2025
-
-    <script>
-        // JavaScript to toggle project descriptions
-        const projectItems = document.querySelectorAll('.current-project-item, .project-tile');
-
-        projectItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const description = item.querySelector('.project-description');
-                if (description) {
-                    description.style.display = description.style.display === 'block' ? 'none' : 'block';
-                }
-            });
-        });
-    </script> 
-
-    -->
 </body>
 </html>
