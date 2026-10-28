@@ -50,7 +50,19 @@
             background-repeat: no-repeat;
         }
 
+        /* Comet layer: sits between the background image and the content */
+        #comets {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
         .container {
+            position: relative;
+            z-index: 1;
             padding: 40px 20px;
             min-height: 100vh;
         }
@@ -168,6 +180,52 @@
         }
         .btn:hover { background-color: var(--cream-bright); color: var(--bg); }
 
+        /* Paper viewer */
+        a.skill-tag { color: var(--bg); transition: background-color .2s ease; }
+        a.skill-tag:hover { background-color: var(--cream-bright); color: var(--bg); }
+        .paper-title a { color: inherit; }
+        .paper-title a:hover { color: var(--cream-bright); }
+
+        .paper-viewer {
+            width: min(1000px, 92vw);
+            height: 90vh;
+            max-width: none;
+            max-height: none;
+            padding: 0;
+            border: none;
+            background: var(--surface);
+            color: var(--cream);
+            /* Pixel frame with notched corners */
+            box-shadow:
+                0 -4px 0 0 var(--cream), 0 4px 0 0 var(--cream),
+                -4px 0 0 0 var(--cream), 4px 0 0 0 var(--cream),
+                0 0 0 12px rgba(0, 0, 0, .35);
+        }
+        .paper-viewer[open] { display: flex; flex-direction: column; }
+        .paper-viewer::backdrop { background: rgba(8, 8, 10, .75); }
+
+        .paper-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 14px;
+            border-bottom: 4px solid var(--cream);
+            font-size: .95em;
+        }
+        .paper-bar .file { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .paper-bar .file::before { content: '▓ '; color: var(--cream-dim); }
+        .paper-bar a, .paper-bar button {
+            font: inherit;
+            color: var(--cream);
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .paper-bar a:hover, .paper-bar button:hover { color: var(--cream-bright); }
+        .paper-viewer iframe { flex: 1; width: 100%; border: none; background: #fff; }
+
         /* ── Desktop ─────────────────────────────────────────────── */
         @media (min-width: 900px) {
             .container { padding: clamp(16px, 2vw, 40px); }
@@ -240,6 +298,7 @@
 </head>
 <body>
     <div class="hero">
+        <canvas id="comets" aria-hidden="true"></canvas>
         <div class="container">
             <div class="content">
                 <header class="area-header">
@@ -274,9 +333,10 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <h3><b>[PAPER]</b>Distillation of the DreamerV3 World Model for Efficient Deployment</h3>
+                            <h3 class="paper-title"><a href="assets/dreamer_v3_efficient_deployment.pdf" target="_blank" data-paper><b>[PAPER]</b> Distillation of the DreamerV3 World Model for Efficient Deployment</a></h3>
                             <p>As a paper for a RL course, we explored world model distillation techniques for improving the efficiency of Dreamer models.</p>
                             <div>
+                                <a class="skill-tag" href="assets/dreamer_v3_efficient_deployment.pdf" target="_blank" data-paper>Read Paper</a>
                                 <span class="skill-tag">RL</span>
                                 <span class="skill-tag">Optimization</span>
                             </div>
@@ -343,5 +403,281 @@
             </div>
         </div>
     </div>
+
+    <dialog class="paper-viewer" id="paper" aria-label="Paper viewer">
+        <div class="paper-bar">
+            <span class="file">dreamer_v3_efficient_deployment.pdf</span>
+            <a href="assets/dreamer_v3_efficient_deployment.pdf" download>[ download ]</a>
+            <a href="assets/dreamer_v3_efficient_deployment.pdf" target="_blank">[ open ↗ ]</a>
+            <button type="button" data-close aria-label="Close">[ x ]</button>
+        </div>
+        <iframe title="DreamerV3 distillation paper"></iframe>
+    </dialog>
+
+    <script>
+    // Paper viewer: in-page on desktop, plain PDF link on phones/tablets
+    (() => {
+        const PDF = 'assets/dreamer_v3_efficient_deployment.pdf';
+        const dialog = document.getElementById('paper');
+        const frame = dialog.querySelector('iframe');
+        const canEmbed = () => navigator.pdfViewerEnabled !== false &&
+            matchMedia('(min-width: 700px) and (pointer: fine)').matches;
+
+        function open() {
+            if (!frame.src) frame.src = PDF + '#view=FitH';   // load lazily
+            if (!dialog.open) dialog.showModal();
+            history.replaceState(null, '', '#paper');
+        }
+
+        document.querySelectorAll('[data-paper]').forEach(a =>
+            a.addEventListener('click', e => {
+                if (!canEmbed()) return;   // let the link open the PDF directly
+                e.preventDefault();
+                open();
+            }));
+
+        dialog.querySelector('[data-close]').addEventListener('click', () => dialog.close());
+        // Click on the backdrop closes too
+        dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+        dialog.addEventListener('close', () =>
+            history.replaceState(null, '', location.pathname + location.search));
+
+        // Shareable link: yoursite/#paper opens the paper straight away
+        if (location.hash === '#paper') canEmbed() ? open() : location.replace(PDF);
+    })();
+    </script>
+
+    <script>
+    (() => {
+        // ── Comet settings ──────────────────────────────────────────
+        const COMET_INTERVAL = 6;   // seconds between comets
+        const PIXEL = 4;            // size of one "pixel" in CSS px
+        const BIG_CHANCE = 0.10;    // chance a comet is big instead of small
+
+        // Small comets vary a little; big ones are rare. No in-between.
+        const SIZES = {
+            small: [
+                { head: 1, tail: [10, 18], speed: [70, 100] },
+                { head: 2, tail: [18, 28], speed: [60, 85] },
+            ],
+            big: [
+                { head: 4, tail: [45, 65], speed: [45, 60] },
+            ],
+        };
+        // Moon disc in the background image (600×600 px), comets pass behind it
+        const BG_SIZE = 600;
+        const MOON = { x: 247, y: 303, r: 87 };
+        const SKY = { top: 100, bottom: 500 };   // rows of the image that aren't transparent
+        const HEAD = [255, 248, 236];   // warm white
+        const TAIL = [213, 196, 172];   // --cream
+        const ALPHA_STEPS = 5;          // quantised fade for the pixel look
+
+        // ── Star settings ───────────────────────────────────────────
+        const STAR_DENSITY = 3;         // stars per 100,000 CSS px² of screen
+        const GLINT_INTERVAL = 5;       // seconds between a bright star's glint
+        const STAR_COLORS = [HEAD, TAIL, [205, 218, 255]];   // warm, cream, faint blue
+
+        const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const canvas = document.getElementById('comets');
+        const ctx = canvas.getContext('2d');
+        let W = 0, H = 0;
+        let moon = { x: 0, y: 0, r2: 0 };   // in canvas pixels
+        let sky = { top: 0, bottom: 0 };
+
+        function resize() {
+            const vw = document.documentElement.clientWidth;
+            const vh = document.documentElement.clientHeight;
+            W = Math.ceil(vw / PIXEL);
+            H = Math.ceil(vh / PIXEL);
+            canvas.width = W;
+            canvas.height = H;
+            canvas.style.width = W * PIXEL + 'px';
+            canvas.style.height = H * PIXEL + 'px';
+
+            // Same mapping as the hero's fixed, centered, `cover` background
+            const scale = Math.max(vw, vh) / BG_SIZE;
+            const ox = (vw - BG_SIZE * scale) / 2;
+            const oy = (vh - BG_SIZE * scale) / 2;
+            const r = MOON.r * scale / PIXEL;
+            moon = {
+                x: (ox + MOON.x * scale) / PIXEL,
+                y: (oy + MOON.y * scale) / PIXEL,
+                r2: r * r,
+            };
+            sky = {
+                top: Math.floor((oy + SKY.top * scale) / PIXEL),
+                bottom: Math.ceil((oy + SKY.bottom * scale) / PIXEL),
+            };
+            starCount = Math.min(stars.length, Math.round(vw * vh / 1e5 * STAR_DENSITY));
+            if (reducedMotion) { ctx.clearRect(0, 0, W, H); drawStars(0); }
+        }
+
+        // Only draw on the visible sky, and never in front of the moon
+        const visible = (x, y) =>
+            x >= 0 && x < W && y >= Math.max(0, sky.top) && y < Math.min(H, sky.bottom) &&
+            (x + 0.5 - moon.x) ** 2 + (y + 0.5 - moon.y) ** 2 >= moon.r2;
+
+        const rand = (a, b) => a + Math.random() * (b - a);
+        const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+        const quantise = (a, steps = ALPHA_STEPS) => Math.ceil(a * steps) / steps;
+
+        // Stars live in 0..1 screen space so they stay put on resize;
+        // only the first `starCount` are shown, depending on screen size.
+        const stars = Array.from({ length: 300 }, () => {
+            const roll = Math.random();
+            const kind = roll < 0.06 ? 'sparkle' : roll < 0.3 ? 'bright' : 'dim';
+            return {
+                u: Math.random(),
+                v: Math.random(),
+                kind,
+                base: kind === 'dim' ? rand(0.2, 0.4) : rand(0.55, 0.8),
+                twinkle: rand(0.15, 0.4),       // how much it dims while twinkling
+                speed: rand(0.3, 1.1),          // slow, out of sync
+                phase: rand(0, Math.PI * 2),
+                col: Math.random() < 0.12 ? STAR_COLORS[2] : pick(STAR_COLORS.slice(0, 2)),
+                glint: 0,                       // 0..1 while glinting
+            };
+        });
+        let starCount = 0;
+
+        function plot(x, y, a, col) {
+            if (a <= 0 || !visible(x, y)) return;
+            ctx.fillStyle = `rgba(${col[0]},${col[1]},${col[2]},${a})`;
+            ctx.fillRect(x, y, 1, 1);
+        }
+
+        function drawStars(time) {
+            for (let i = 0; i < starCount; i++) {
+                const s = stars[i];
+                const x = Math.floor(s.u * W), y = Math.floor(s.v * H);
+                const wave = (Math.sin(time * s.speed + s.phase) + 1) / 2;
+                const a = Math.min(1, s.base * (1 - s.twinkle * wave) + s.glint * 0.4);
+                plot(x, y, quantise(a, 8), s.col);
+
+                if (s.kind === 'dim') continue;
+                // Little plus-shaped rays: always faintly on for sparkles,
+                // and growing on any non-dim star while it glints
+                const arms = s.glint > 0 ? 1 + Math.round(s.glint * 2) : s.kind === 'sparkle' ? 1 : 0;
+                for (let d = 1; d <= arms; d++) {
+                    const ra = quantise(a * (0.45 + s.glint * 0.3) / d, 8);
+                    plot(x + d, y, ra, s.col);
+                    plot(x - d, y, ra, s.col);
+                    plot(x, y + d, ra, s.col);
+                    plot(x, y - d, ra, s.col);
+                }
+            }
+        }
+
+        let glinting = null, glintAge = 0, untilGlint = GLINT_INTERVAL / 2;
+
+        function updateGlint(dt) {
+            if (glinting) {
+                glintAge += dt;
+                const t = glintAge / 1.2;               // 1.2s up and back down
+                glinting.glint = t < 1 ? Math.sin(t * Math.PI) : 0;
+                if (t >= 1) glinting = null;
+            }
+            untilGlint -= dt;
+            if (untilGlint <= 0 && !glinting) {
+                untilGlint = GLINT_INTERVAL * rand(0.7, 1.3);
+                const candidates = stars.slice(0, starCount).filter(s => s.kind !== 'dim');
+                if (candidates.length) { glinting = pick(candidates); glintAge = 0; }
+            }
+        }
+
+        addEventListener('resize', resize);
+        resize();
+        if (reducedMotion) return;   // static stars only, no motion
+
+        const comets = [];
+
+        function spawn() {
+            const type = pick(Math.random() < BIG_CHANCE ? SIZES.big : SIZES.small);
+            const angle = Math.random() * Math.PI * 2;
+            const speed = rand(...type.speed);
+            const dx = Math.cos(angle), dy = Math.sin(angle);
+            // Start somewhere on screen and fly for a short while
+            comets.push({
+                x: rand(W * 0.1, W * 0.9),
+                y: rand(Math.max(0, sky.top) + H * 0.1, Math.min(H, sky.bottom) - H * 0.1),
+                dx, dy, speed,
+                head: type.head,
+                tail: Math.round(rand(...type.tail)),
+                age: 0,
+                life: rand(1.4, 2.4),
+            });
+        }
+
+        function draw(c) {
+            // Overall fade in/out over the comet's life
+            const t = c.age / c.life;
+            const fade = Math.min(1, t / 0.15, (1 - t) / 0.3);
+            // Collect pixels first so overlapping steps don't double-blend
+            const px = new Map();
+            const put = (x, y, a, col) => {
+                if (a <= 0 || !visible(x, y)) return;
+                const k = x + y * W;
+                const prev = px.get(k);
+                if (!prev || prev.a < a) px.set(k, { x, y, a, col });
+            };
+
+            for (let i = c.tail; i >= 0; i--) {
+                const k = i / c.tail;
+                const w = Math.max(1, Math.round(c.head * (1 - k)));
+                const cx = Math.round(c.x - c.dx * i);
+                const cy = Math.round(c.y - c.dy * i);
+                const a = quantise((1 - k) ** 1.2 * fade);
+                const col = i < c.head ? HEAD : TAIL;
+                const o = Math.floor((w - 1) / 2);
+                for (let yy = 0; yy < w; yy++)
+                    for (let xx = 0; xx < w; xx++)
+                        put(cx - o + xx, cy - o + yy, a, col);
+            }
+
+            // Faint glow around big heads
+            if (c.head >= 3) {
+                const hx = Math.round(c.x), hy = Math.round(c.y);
+                const r = Math.ceil(c.head / 2) + 1;
+                for (let yy = -r; yy <= r; yy++)
+                    for (let xx = -r; xx <= r; xx++)
+                        put(hx + xx, hy + yy, quantise(0.2 * fade), HEAD);
+            }
+
+            for (const p of px.values()) {
+                ctx.fillStyle = `rgba(${p.col[0]},${p.col[1]},${p.col[2]},${p.a})`;
+                ctx.fillRect(p.x, p.y, 1, 1);
+            }
+        }
+
+        let last = performance.now();
+        let untilNext = 1;  // first comet shortly after load
+
+        function frame(now) {
+            const dt = Math.min(0.05, (now - last) / 1000);  // clamp after tab switches
+            last = now;
+
+            untilNext -= dt;
+            if (untilNext <= 0) {
+                spawn();
+                untilNext += COMET_INTERVAL;
+            }
+
+            ctx.clearRect(0, 0, W, H);
+            updateGlint(dt);
+            drawStars(now / 1000);
+            for (let i = comets.length - 1; i >= 0; i--) {
+                const c = comets[i];
+                c.age += dt;
+                c.x += c.dx * c.speed * dt;
+                c.y += c.dy * c.speed * dt;
+                if (c.age >= c.life) comets.splice(i, 1);
+                else draw(c);
+            }
+            requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+    })();
+    </script>
 </body>
 </html>
